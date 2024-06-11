@@ -4,6 +4,7 @@
 
 # Local .terraform directories
 **/.terraform/*
+.terraform
 
 # .tfstate files
 *.tfstate
@@ -42,6 +43,9 @@ terraform.rc
 
 # Terraform .hcl file
 .hcl
+
+#Terraform plan file
+.tfstate
 
 # All JSON Files
 *.json

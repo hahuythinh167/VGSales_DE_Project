@@ -29,5 +29,5 @@ resource "google_storage_bucket" "VGSales_Bucket" {
 }
 
 resource "google_bigquery_dataset" "VGSales_dataset" {
-  dataset_id = "VGSales_dataset"
+  dataset_id = var.bq_dataset_name
 }
