@@ -5,7 +5,7 @@ variable "project" {
 
 variable "credentials" {
   description = "GCP Credentials Location"
-  default     = "/Users/thinhha/Documents/DE First Project/credentials/GCP_Creds.json"
+  default     = "/Users/thinhha/Documents/VGSales_DE_Project/credentials/GCP_Creds.json"
 }
 
 variable "location" {
