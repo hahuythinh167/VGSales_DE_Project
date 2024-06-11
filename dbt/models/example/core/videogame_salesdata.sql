@@ -31,4 +31,3 @@ select
     {{ get_ESRB_rating_full_form('ESRB_Rating') }} as ESRB_Rating_Full_Form
 from 
     sales_data
-

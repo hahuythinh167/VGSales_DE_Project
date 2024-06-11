@@ -3,7 +3,7 @@ from prefect import flow, task
 import os
 from pathlib import Path
 
-@task
+@task(retries=3, log_prints=True)
 def parameter_config(dataset: str) -> str:
     """
     Establishes dataset parameter for dataset in GCS
@@ -37,7 +37,7 @@ def parameter_config(dataset: str) -> str:
 
     return table_id, job_config, uri
 
-@task
+@task(retries=3, log_prints=True)
 def load_job(client, table_id: str, job_config, uri: str):
     """
     Loads dataset from GCS to BigQuery Data Warehouse using Google Cloud API
@@ -51,7 +51,7 @@ def load_job(client, table_id: str, job_config, uri: str):
     destination_table = client.get_table(table_id)  # Make an API request.
     print("Loaded {} rows.".format(destination_table.num_rows))
 
-@task
+@task()
 def create_bq_connection() -> bigquery.Client:
     """
     Connects to BigQuery Client using Google Cloud API
