@@ -5,20 +5,6 @@ from prefect_gcp.cloud_storage import GcsBucket
 import os
 
 @task
-def local_path(filename: str, dataset_dir: str = '/Users/thinhha/Documents/VGSales_DE_Project/dataset') -> Path:
-    """
-    Create path for local machine
-    """
-    return Path(f'{dataset_dir}/{filename}')
-
-@task
-def remote_path(filename: str) -> Path:
-    """
-    Create path for remote instance e.g. GCS
-    """
-    return Path(f'dataset/{filename}')
-
-@task
 def kaggle_to_local(dataset_dir: str, kaggle_dataset: str, api) -> None:
     """
     Connects to kaggle api, fetches kaggle dataset, and writes dataset to designated folder
