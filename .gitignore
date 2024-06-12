@@ -50,3 +50,6 @@ terraform.rc
 # All JSON Files
 *.json
 !spec/*.json
+
+#Weird files
+.DS_Store
