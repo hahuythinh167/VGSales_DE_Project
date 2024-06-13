@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: videogame_salesdata
+    description: >
+      List of video game sales across NA, EU, and JP region 

@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: staging
+    database: first-de-project-426107
+    schema: VGSales_dataset
+
+    tables:
+      - name: VGSales_table
+
+#remember to create macro for models 
