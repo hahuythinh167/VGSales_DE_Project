@@ -10,12 +10,12 @@ variable "credentials" {
 
 variable "location" {
   description = "Project Location"
-  default     = "ASIA"
+  default     = "US"
 }
 
 variable "region" {
   description = "Project Region"
-  default     = "asia-southeast1"
+  default     = "us-west1"
 }
 
 variable "bq_dataset_name" {

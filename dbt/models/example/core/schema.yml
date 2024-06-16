@@ -2,5 +2,72 @@ version: 2
 
 models:
   - name: videogame_salesdata
-    description: >
-      List of video game sales across NA, EU, and JP region 
+    description: ""
+    columns:
+      - name: game_id
+        data_type: string
+        description: ""
+
+      - name: name
+        data_type: string
+        description: ""
+
+      - name: platform
+        data_type: string
+        description: ""
+
+      - name: year_of_release
+        data_type: int64
+        description: ""
+
+      - name: genre
+        data_type: string
+        description: ""
+
+      - name: publisher
+        data_type: string
+        description: ""
+
+      - name: na_sales
+        data_type: numeric
+        description: ""
+
+      - name: eu_sales
+        data_type: numeric
+        description: ""
+
+      - name: jp_sales
+        data_type: numeric
+        description: ""
+
+      - name: other_sales
+        data_type: numeric
+        description: ""
+
+      - name: global_sales
+        data_type: numeric
+        description: ""
+
+      - name: critic_score
+        data_type: numeric
+        description: ""
+
+      - name: critic_score_category
+        data_type: string
+        description: ""
+
+      - name: user_score
+        data_type: numeric
+        description: ""
+
+      - name: user_score_category
+        data_type: string
+        description: ""
+
+      - name: esrb_rating
+        data_type: string
+        description: ""
+
+      - name: esrb_rating_full_form
+        data_type: string
+        description: ""

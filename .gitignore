@@ -1,6 +1,6 @@
 # Folder with credential files and datasets
 /credentials
-/Dataset
+/dataset
 
 # Local .terraform directories
 **/.terraform/*
@@ -53,3 +53,6 @@ terraform.rc
 
 #Weird files
 .DS_Store
+
+#dbt logs folder
+/logs

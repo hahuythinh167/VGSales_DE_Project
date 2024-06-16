@@ -8,4 +8,70 @@ sources:
     tables:
       - name: VGSales_table
 
-#remember to create macro for models 
+models:
+  - name: stg_videogame_salesdata
+    description: "Staging model for video game sales data from BigQuery source"
+    columns:
+      - name: game_id
+        data_type: string
+        description: ""
+
+      - name: name
+        data_type: string
+        description: ""
+
+      - name: platform
+        data_type: string
+        description: ""
+
+      - name: year_of_release
+        data_type: int64
+        description: ""
+
+      - name: genre
+        data_type: string
+        description: ""
+
+      - name: publisher
+        data_type: string
+        description: ""
+
+      - name: na_sales
+        data_type: numeric
+        description: ""
+
+      - name: eu_sales
+        data_type: numeric
+        description: ""
+
+      - name: jp_sales
+        data_type: numeric
+        description: ""
+
+      - name: other_sales
+        data_type: numeric
+        description: ""
+
+      - name: global_sales
+        data_type: numeric
+        description: ""
+
+      - name: critic_score
+        data_type: numeric
+        description: ""
+
+      - name: critic_count
+        data_type: numeric
+        description: ""
+
+      - name: user_score
+        data_type: numeric
+        description: ""
+
+      - name: user_count
+        data_type: numeric
+        description: ""
+
+      - name: rating
+        data_type: string
+        description: ""
