@@ -56,3 +56,4 @@ terraform.rc
 
 #dbt logs folder
 /logs
+.log
