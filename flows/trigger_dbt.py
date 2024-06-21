@@ -4,6 +4,9 @@ from pathlib import Path
 
 @flow
 def trigger_dbt_flow() -> str:
+    """
+    Orchestrated by Prefect. Triggers DBT build process for data warehouse in BigQuery
+    """
     dbt_dir = Path('/Users/thinhha/Documents/VGSales_DE_Project/dbt')
     result = DbtCoreOperation(
         commands=["dbt debug","dbt build -t dev --vars 'is_test_run: false'"],

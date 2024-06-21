@@ -4,7 +4,10 @@ import os
 from pathlib import Path
 
 @task
-def parameter_config(dataset: str):
+def parameter_config(dataset: str) -> str:
+    """
+    Establishes dataset parameter for dataset in GCS
+    """
     table_id = 'first-de-project-426107.VGSales_dataset.VGSales_table'
 
     job_config = bigquery.LoadJobConfig(
@@ -35,7 +38,10 @@ def parameter_config(dataset: str):
     return table_id, job_config, uri
 
 @task
-def load_job(client, table_id, job_config, uri):
+def load_job(client, table_id: str, job_config, uri: str):
+    """
+    Loads dataset from GCS to BigQuery Data Warehouse using Google Cloud API
+    """
     load_job = client.load_table_from_uri(
     uri, table_id, job_config=job_config
     )  # Make an API request.
@@ -46,11 +52,22 @@ def load_job(client, table_id, job_config, uri):
     print("Loaded {} rows.".format(destination_table.num_rows))
 
 @task
-def create_bq_connection():
+def create_bq_connection() -> bigquery.Client:
+    """
+    Connects to BigQuery Client using Google Cloud API
+    """
+
     return bigquery.Client()
 
 @flow()
 def ingest_gcs_to_bq_flow(datasets: list[str]):
+    """
+    Ingest files from GCS to BigQuery using Google Cloud API
+
+    Creates connection to BigQuery
+    Establishes parameter list for datasets in GCS 
+    Loads to BigQuery Data Warehouse using Google Cloud API
+    """
     client = create_bq_connection()
 
     for dataset in datasets:
