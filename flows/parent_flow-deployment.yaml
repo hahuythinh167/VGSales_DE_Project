@@ -1,0 +1,43 @@
+###
+### A complete description of a Prefect Deployment for flow 'parent-flow'
+###
+name: Analytics Main Flow
+description: null
+version: 400c3088456b0864525583dd51987ae2
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {"kaggle_datasets": ['rush4ratio/video-game-sales-with-ratings']}
+schedule: null
+schedules: []
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: parent-flow
+manifest_path: null
+storage: null
+path: /Users/thinhha/Documents/VGSales_DE_Project/flows
+entrypoint: main_flow.py:parent_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
+timestamp: '2024-06-21T08:33:40.473604+00:00'
+triggers: []
+enforce_parameter_schema: null

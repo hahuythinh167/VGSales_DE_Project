@@ -1,0 +1,14 @@
+VGSales_DE_Project:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      dataset: VGSales_dataset
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: /Users/thinhha/Documents/VGSales_DE_Project/credentials/GCP_Creds.json
+      location: US
+      method: service-account
+      priority: interactive
+      project: first-de-project-426107
+      threads: 4
