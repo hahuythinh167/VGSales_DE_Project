@@ -7,7 +7,7 @@ import os
 @task
 def kaggle_to_local(dataset_dir: str, kaggle_dataset: str, api) -> None:
     """
-    Connects to kaggle api, fetches kaggle dataset, and writes dataset to designated folder
+    Connects to Kaggle API, fetches kaggle dataset, and writes dataset to predetermined directory
     """
 
     api.dataset_download_files(kaggle_dataset, 
@@ -15,7 +15,10 @@ def kaggle_to_local(dataset_dir: str, kaggle_dataset: str, api) -> None:
                             unzip = True)
 
 @task
-def kaggle_authenticate():
+def kaggle_authenticate() -> KaggleApi:
+    """
+    Authenticates Kaggle API
+    """
     api = KaggleApi()
     api.authenticate()
 
@@ -24,7 +27,7 @@ def kaggle_authenticate():
 @task
 def write_gcs(dataset: str) -> None:
     """
-    Write dataset files to GCS Bucket through Prefect Block
+    Write dataset files to GCS Bucket using Prefect Block
     """
     path = Path(f'dataset/{dataset}')
     local_path = Path(f'../{path}')
@@ -35,6 +38,12 @@ def write_gcs(dataset: str) -> None:
 
 @flow()
 def ingest_web_to_gcs_flow(kaggle_datasets: list[str] = ['rush4ratio/video-game-sales-with-ratings']) -> None:
+    """
+    Main flow for ingestion process from web to GCS
+    
+    Using Kaggle API to pull datasets to local machine
+    Write dataset files to GCS using connected blocks in Prefect 
+    """
     dataset_dir = Path('../dataset')
 
     api = kaggle_authenticate()

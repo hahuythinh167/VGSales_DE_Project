@@ -6,7 +6,14 @@ from prefect import flow
 import os
 
 @flow()
-def parent_flow(kaggle_datasets: list[str]):
+def parent_flow(kaggle_datasets: list[str] = ['rush4ratio/video-game-sales-with-ratings']) -> None:
+    """
+    Main function flow for prefect orchestration 
+    Default set to kaggle dataset 'rush4ratio/video-game-sales-with-ratings'
+
+    Ingestion process to GCP/BQ
+    Transformation process using DBT
+    """
     
     ingest_web_to_gcs_flow(kaggle_datasets) 
     dataset_dir = Path('../dataset')
