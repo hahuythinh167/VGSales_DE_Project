@@ -34,7 +34,9 @@ def write_gcs(dataset: str) -> None:
     gcp_cloud_storage_bucket_block.upload_from_path(from_path=local_path, to_path=remote_path)
 
 @flow()
-def parent_flow(dataset_dir: Path, kaggle_datasets: list[str]) -> None:
+def ingest_web_to_gcs_flow(kaggle_datasets: list[str] = ['rush4ratio/video-game-sales-with-ratings']) -> None:
+    dataset_dir = Path('../dataset')
+
     api = kaggle_authenticate()
     for kaggle_dataset in kaggle_datasets:
         kaggle_to_local(dataset_dir, kaggle_dataset, api)
@@ -44,8 +46,6 @@ def parent_flow(dataset_dir: Path, kaggle_datasets: list[str]) -> None:
         write_gcs(dataset)
 
 if __name__  == '__main__':
-    base_dir = Path('/Users/thinhha/Documents/VGSales_DE_Project')
-    dataset_dir = Path(f'{base_dir}/dataset')
     kaggle_datasets = ['rush4ratio/video-game-sales-with-ratings']
 
-    parent_flow(dataset_dir, kaggle_datasets)
+    ingest_web_to_gcs_flow(kaggle_datasets) 

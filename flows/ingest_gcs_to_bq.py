@@ -1,8 +1,10 @@
 from google.cloud import bigquery
 from prefect import flow, task
+import os
+from pathlib import Path
 
 @task
-def parameter_config():
+def parameter_config(dataset: str):
     table_id = 'first-de-project-426107.VGSales_dataset.VGSales_table'
 
     job_config = bigquery.LoadJobConfig(
@@ -28,7 +30,7 @@ def parameter_config():
         # The source format defaults to CSV, so the line below is optional.
         source_format=bigquery.SourceFormat.CSV,
     )
-    uri = "gs://first-de-project-426107-terra-bucket/dataset/Video_Games_Sales_as_at_22_Dec_2016.csv"
+    uri = f'gs://first-de-project-426107-terra-bucket/dataset/{dataset}'
 
     return table_id, job_config, uri
 
@@ -47,13 +49,17 @@ def load_job(client, table_id, job_config, uri):
 def create_bq_connection():
     return bigquery.Client()
 
-@flow
-def parent_flow():
+@flow()
+def ingest_gcs_to_bq_flow(datasets: list[str]):
     client = create_bq_connection()
 
-    table_id, job_config, uri = parameter_config()
+    for dataset in datasets:
+        table_id, job_config, uri = parameter_config(dataset)
 
-    load_job(client, table_id, job_config, uri)
+        load_job(client, table_id, job_config, uri)
 
 if __name__ == '__main__':
-    parent_flow()
+    dataset_dir = Path('../dataset')
+    datasets = os.listdir(os.path.expanduser(dataset_dir))
+    
+    ingest_gcs_to_bq_flow(datasets)
