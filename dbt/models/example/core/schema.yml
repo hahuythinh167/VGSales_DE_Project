@@ -2,72 +2,78 @@ version: 2
 
 models:
   - name: videogame_salesdata
-    description: ""
+    description: "Final model for video games salesdata"
     columns:
       - name: game_id
         data_type: string
-        description: ""
+        description: "Surrogate ID for every entry, generated using DBT. Based on Name, Platform, and Year of Release"
 
       - name: name
         data_type: string
-        description: ""
+        description: "Name of game entry"
 
       - name: platform
         data_type: string
-        description: ""
+        description: "Primary platform for game entry"
 
       - name: year_of_release
         data_type: int64
-        description: ""
+        description: "Year of release for game entry on that platform"
 
       - name: genre
         data_type: string
-        description: ""
+        description: "Primary genre of game"
 
       - name: publisher
         data_type: string
-        description: ""
+        description: "Primary publisher"
 
       - name: na_sales
         data_type: numeric
-        description: ""
+        description: "Sales for this game entry in NA region. In unit of games."
 
       - name: eu_sales
         data_type: numeric
-        description: ""
+        description: "Sales for this game entry in EU region. In unit of games."
 
       - name: jp_sales
         data_type: numeric
-        description: ""
+        description: "Sales for this game entry in JP region. In unit of games."
 
       - name: other_sales
         data_type: numeric
-        description: ""
+        description: "Sales for this game entry in other region. In unit of games."
 
       - name: global_sales
         data_type: numeric
-        description: ""
+        description: "Sales for this game entry in global region. In unit of games."
 
       - name: critic_score
         data_type: numeric
-        description: ""
+        description: "Critic score of games entry. Collected from Metacritics"
 
       - name: critic_score_category
         data_type: string
-        description: ""
+        description: "Category of critics score. 
+                      Criteria: More than 85 is Excellend
+                      More than 70 is Okay
+                      Rest is Bad"
 
       - name: user_score
         data_type: numeric
-        description: ""
+        description: "User score of games entry. Collected from Metacritics"
 
       - name: user_score_category
         data_type: string
-        description: ""
+        description: "Category of user score. 
+                      Criteria: More than 8.5 is Excellend
+                      More than 7.0 is Okay
+                      Rest is Bad"
 
       - name: esrb_rating
         data_type: string
-        description: ""
+        description: "ESRB rating in abbreviation"
 
       - name: esrb_rating_full_form
         data_type: string
-        description: ""
+        description: "Full text version of ESRB"
