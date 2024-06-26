@@ -3,7 +3,11 @@
 /dataset
 
 # Local .terraform directories
+<<<<<<< HEAD
 **/.terraform/*
+=======
+**/.terraform/* 
+>>>>>>> main
 .terraform
 
 # .tfstate files
