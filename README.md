@@ -41,7 +41,7 @@ The following tools are used in this project:
 
 ## Data Pipeline Architecture
 
-<img width="897" alt="Tech-used.jpg" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Blank_image.jpg">
+<img width="897" alt="Tech-used.jpg" src="https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/images/Tech-used.png">
 
 ## Step 1: Deploy Infrastructure
 
@@ -53,7 +53,79 @@ Here's the specific of the task that was performed:
 
 Link to the script: [main.tf](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/main.tf) & [variable.tf](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/variables.tf)
 
-(Placeholder for Terraform script image)
+```t
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "5.33.0"
+    }
+  }
+}
+
+provider "google" {
+  credentials = file(var.credentials)
+  project     = var.project
+  region      = var.region
+}
+
+resource "google_storage_bucket" "VGSales_Bucket" {
+  name          = var.gcs_bucket_name
+  location      = var.location
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+
+resource "google_bigquery_dataset" "VGSales_dataset" {
+  dataset_id = var.bq_dataset_name
+}
+```
+
+```t
+variable "project" {
+  description = "Project Name"
+  default     = "first-de-project-426107"
+}
+
+variable "credentials" {
+  description = "GCP Credentials Location"
+  default     = "/Users/thinhha/Documents/VGSales_DE_Project/credentials/GCP_Creds.json"
+}
+
+variable "location" {
+  description = "Project Location"
+  default     = "US"
+}
+
+variable "region" {
+  description = "Project Region"
+  default     = "us-west1"
+}
+
+variable "bq_dataset_name" {
+  description = "My BigQuery Dataset Name"
+  default     = "VGSales_dataset"
+}
+
+variable "gcs_bucket_name" {
+  description = "My Storage Bucket Name"
+  default     = "first-de-project-426107-terra-bucket"
+}
+
+variable "gcs_storage_class" {
+  description = "GCS Bucket Storage Class"
+  default     = "STANDARD"
+}
+```
+
 
 ## Step 2: Dataset Extraction
 
@@ -82,7 +154,9 @@ After, I created the following stages:
 
 All the stages above are orchestrated and automated using Prefect. 
 
-(placeholder for some finished task images in GCS and BQ)
+![GCS Image](https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/images/GCS%20image.png)
+
+![BQ Image](https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/images/BQ%20image.png)
 
 ## Step 4: Transformation
 
@@ -178,5 +252,5 @@ from
 
 After completing the ETL pipeline and analysis, data is loaded into a Looker Studio dashboard, and available to view [here](https://lookerstudio.google.com/u/0/reporting/cf3b0b36-8d40-4ac8-b230-adb4ff51d8ad).
 
-(placeholder image of dashboard. format: ![]() )
+![Dashboard](https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/images/Dashboard.png)
 ***
