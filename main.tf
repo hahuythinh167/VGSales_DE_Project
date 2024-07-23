@@ -29,5 +29,9 @@ resource "google_storage_bucket" "VGSales_Bucket" {
 }
 
 resource "google_bigquery_dataset" "VGSales_dataset" {
+<<<<<<< HEAD
   dataset_id = var.bq_dataset_name
+=======
+  dataset_id = "VGSales_dataset"
+>>>>>>> 0a45c1d (Add configuration for BigQuery in Terraform file)
 }

@@ -5,17 +5,29 @@ variable "project" {
 
 variable "credentials" {
   description = "GCP Credentials Location"
+<<<<<<< HEAD
   default     = "/Users/thinhha/Documents/VGSales_DE_Project/credentials/GCP_Creds.json"
+=======
+  default     = "/Users/thinhha/Documents/DE First Project/credentials/GCP_Creds.json"
+>>>>>>> 0a45c1d (Add configuration for BigQuery in Terraform file)
 }
 
 variable "location" {
   description = "Project Location"
+<<<<<<< HEAD
   default     = "US"
+=======
+  default     = "ASIA"
+>>>>>>> 0a45c1d (Add configuration for BigQuery in Terraform file)
 }
 
 variable "region" {
   description = "Project Region"
+<<<<<<< HEAD
   default     = "us-west1"
+=======
+  default     = "asia-southeast1"
+>>>>>>> 0a45c1d (Add configuration for BigQuery in Terraform file)
 }
 
 variable "bq_dataset_name" {
