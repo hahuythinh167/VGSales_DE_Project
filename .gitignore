@@ -3,11 +3,7 @@
 /dataset
 
 # Local .terraform directories
-<<<<<<< HEAD
 **/.terraform/*
-=======
-**/.terraform/* 
->>>>>>> main
 .terraform
 
 # .tfstate files
@@ -57,6 +53,7 @@ terraform.rc
 
 #Weird files
 .DS_Store
+Sample_readme.md
 
 #dbt logs folder
 logs/

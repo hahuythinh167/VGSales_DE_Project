@@ -4,7 +4,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 from prefect_gcp.cloud_storage import GcsBucket
 import os
 
-@task
+@task(log_prints=True)
 def kaggle_to_local(dataset_dir: str, kaggle_dataset: str, api) -> None:
     """
     Connects to Kaggle API, fetches kaggle dataset, and writes dataset to predetermined directory
@@ -24,7 +24,7 @@ def kaggle_authenticate() -> KaggleApi:
 
     return api
 
-@task
+@task(retries=3, log_prints=True)
 def write_gcs(dataset: str) -> None:
     """
     Write dataset files to GCS Bucket using Prefect Block
