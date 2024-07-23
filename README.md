@@ -51,7 +51,7 @@ Here's the specific of the task that was performed:
 1. Create `variables.tf` to dictate the variables used in the primary `main.tf` script. 
 2. Set up `main.tf` to deploy GCS and BigQuery with variables in `variables.tf` and configuration fitting for this particular use case. 
 
-Link to the script: (placeholder for Terraform main.tf and variables.tf scripts)
+Link to the script: [main.tf](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/main.tf) & [variable.tf](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/variables.tf)
 
 (Placeholder for Terraform script image)
 
@@ -59,13 +59,26 @@ Link to the script: (placeholder for Terraform main.tf and variables.tf scripts)
 
 Since the dataset is from Kaggle, I utilized the Kaggle API in Python to pull the dataset from web to local machine for simplicity and automation. 
 
-(placeholder for Kaggle API script. Use the ```python for this part and other script-related part)
+```python
+def kaggle_authenticate() -> KaggleApi:
+
+    api = KaggleApi()
+    api.authenticate()
+
+    return api
+
+def kaggle_to_local(dataset_dir: str, kaggle_dataset: str, api) -> None:
+
+    api.dataset_download_files(kaggle_dataset, 
+                            path = Path(dataset_dir), 
+                            unzip = True)
+```
 
 ## Step 3: Load
 
 After, I created the following stages:
-- Web to GCS: (placeholder for web to gcs script). Using Prefect's GCP block to connect and ingest data to GCS. 
-- GCS to BQ: (placeholder for gcs to bq script). Using Google Cloud API to connect and ingest data from GCS to BigQuery. 
+- [Web to GCS](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/flows/ingest_web_to_gcs.py): Using Prefect's GCP block to connect and ingest data to GCS. 
+- [GCS to BQ](https://github.com/hahuythinh167/VGSales_DE_Project/blob/329710b1abb14487b79323d1c916cf8e5b6a86f5/flows/ingest_gcs_to_bq.py): Using Google Cloud API to connect and ingest data from GCS to BigQuery. 
 
 All the stages above are orchestrated and automated using Prefect. 
 
@@ -76,10 +89,90 @@ All the stages above are orchestrated and automated using Prefect.
 After running the Extract and Load part of the pipeline, I utilized DBT to perform the transformation part inside BigQuery. 
 
 For this step, the transformation in DBT is divided into two stages:
-- Staging: (placeholder link to staging sql file) Load raw data from BigQuery and convert columns to the appropriate data type. Minor filter and clean up for duplicate data. 
-- Core: (placehlder link to core sql file) Create surrogate key for ease of identification, apply further transformation to number and column format, and create new columns to comply with business needs. 
+- [Staging](https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/dbt/models/example/staging/stg_videogame_salesdata.sql): Load raw data from BigQuery and convert columns to the appropriate data type. Minor filter and clean up for duplicate data. 
+- [Core](https://github.com/hahuythinh167/VGSales_DE_Project/blob/main/dbt/models/example/core/videogame_salesdata.sql): Create surrogate key for ease of identification, apply further transformation to number and column format, and create new columns to comply with business needs. 
 
-(placeholder images of snapshot for data in staging and core in Bigquery)
+Staging:
+```sql
+{{ config(materialized='view') }}
+
+with salesdata as (
+    select *,
+        row_number() over(partition by Name, Platform, Year_of_Release) as rn
+    from {{ source('staging','VGSales_table')}}
+)
+
+select 
+    --Identifiers
+    {{ dbt_utils.generate_surrogate_key(['Name','Platform','Year_of_Release']) }} as Game_Id,
+    
+
+    --Game Info
+    Name,
+    Platform,
+    safe_cast(Year_of_Release as integer) as Year_of_Release,
+    Genre,
+    Publisher,
+
+    --Sales Info
+    safe_cast(NA_Sales as numeric) as NA_Sales,
+    safe_cast(EU_Sales as numeric) as EU_Sales,
+    safe_cast(JP_Sales as numeric) as JP_Sales,
+    safe_cast(Other_Sales as numeric) as Other_Sales,
+    safe_cast(Global_Sales as numeric) as Global_Sales,
+
+    --Ratings 
+    safe_cast(Critic_Score as numeric) as Critic_Score,
+    safe_cast(Critic_Count as numeric) as Critic_Count,
+    safe_cast(User_Score as numeric) as User_Score,
+    safe_cast(User_Count as numeric) as User_Count,
+    Rating as ESRB_Rating
+    
+from salesdata
+
+where rn = 1
+
+{% if var('is_test_run', default=true) %}
+    limit 100
+{% endif %}
+```
+
+Core:
+```sql
+{{ config(materialized='table') }}
+
+with sales_data as (
+    select * from {{ ref('stg_videogame_salesdata') }}
+)
+
+select 
+    --Identifier
+    Game_Id,
+
+    --Game Info
+    Name,
+    Platform, 
+    coalesce(Year_of_Release,0) as Year_of_Release,
+    Genre,
+    Publisher,
+
+    --Converting Sales Data from Million notation to normal. Convert null to 0 when applicable
+    coalesce(NA_Sales*1000000,0) as NA_Sales,
+    coalesce(EU_Sales*1000000,0) as EU_Sales,
+    coalesce(JP_Sales*1000000,0) as JP_Sales,
+    coalesce(Other_Sales*1000000,0) as Other_Sales,
+    coalesce(Global_Sales*1000000,0) as Global_Sales,
+
+    --Game Rating
+    Critic_Score,
+    {{ get_critic_score_category('Critic_Score') }} as Critic_Score_Category,
+    User_Score,
+    {{ get_user_score_category('User_Score') }} as User_Score_Category,
+    ESRB_Rating,
+    {{ get_ESRB_rating_full_form('ESRB_Rating') }} as ESRB_Rating_Full_Form
+from 
+    sales_data
+```
 
 ## Step 5: Dashboard
 
